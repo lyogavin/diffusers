@@ -460,6 +460,9 @@ def main():
         args.pretrained_model_name_or_path, subfolder="text_encoder", revision=args.revision
     )
     vae = AutoencoderKL.from_pretrained(args.pretrained_model_name_or_path, subfolder="vae", revision=args.revision)
+
+    # https://github.com/huggingface/diffusers/issues/1619
+    # all ignore_mismatched_sizes and low_cpu_mem_usage and in_channels are needed
     unet = UNet2DConditionModel.from_pretrained(
         args.pretrained_model_name_or_path, subfolder="unet", in_channels=8, revision=args.non_ema_revision,
                                                 ignore_mismatched_sizes=True,low_cpu_mem_usage=False
@@ -473,6 +476,8 @@ def main():
 
     # Create EMA for the unet.
     if args.use_ema:
+        # https://github.com/huggingface/diffusers/issues/1619
+        # all ignore_mismatched_sizes and low_cpu_mem_usage and in_channels are needed
         ema_unet = UNet2DConditionModel.from_pretrained(
             args.pretrained_model_name_or_path, subfolder="unet", in_channels=8, revision=args.revision,
                                                 ignore_mismatched_sizes=True,low_cpu_mem_usage=False
