@@ -464,6 +464,7 @@ def main():
         args.pretrained_model_name_or_path, subfolder="unet", in_channels=8, revision=args.non_ema_revision,
                                                 ignore_mismatched_sizes=True,
     )
+    print(unet)
 
     # Freeze vae and text_encoder
     vae.requires_grad_(False)
@@ -473,8 +474,9 @@ def main():
     if args.use_ema:
         ema_unet = UNet2DConditionModel.from_pretrained(
             args.pretrained_model_name_or_path, subfolder="unet", in_channels=8, revision=args.revision,
-                                                ignore_mismatched_sizes=True, 
+                                                ignore_mismatched_sizes=True,
         )
+        print(ema_unet)
         ema_unet = EMAModel(ema_unet.parameters())
 
     if args.enable_xformers_memory_efficient_attention:
