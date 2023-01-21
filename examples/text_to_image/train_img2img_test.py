@@ -465,6 +465,7 @@ def main():
                                                 ignore_mismatched_sizes=True,
     )
     print(unet)
+    print(unet.conv_in)
 
     # Freeze vae and text_encoder
     vae.requires_grad_(False)
@@ -477,6 +478,7 @@ def main():
                                                 ignore_mismatched_sizes=True,
         )
         print(ema_unet)
+        print(unet.conv_in)
         ema_unet = EMAModel(ema_unet.parameters())
 
     if args.enable_xformers_memory_efficient_attention:
