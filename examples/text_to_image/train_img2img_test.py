@@ -462,7 +462,7 @@ def main():
     vae = AutoencoderKL.from_pretrained(args.pretrained_model_name_or_path, subfolder="vae", revision=args.revision)
     unet = UNet2DConditionModel.from_pretrained(
         args.pretrained_model_name_or_path, subfolder="unet", in_channels=8, revision=args.non_ema_revision,
-                                                ignore_mismatched_sizes=True,
+                                                ignore_mismatched_sizes=True,low_cpu_mem_usage=False
     )
     #print(unet)
     #print(unet.conv_in)
@@ -475,7 +475,7 @@ def main():
     if args.use_ema:
         ema_unet = UNet2DConditionModel.from_pretrained(
             args.pretrained_model_name_or_path, subfolder="unet", in_channels=8, revision=args.revision,
-                                                ignore_mismatched_sizes=True,
+                                                ignore_mismatched_sizes=True,low_cpu_mem_usage=False
         )
         #print(ema_unet)
         #print(unet.conv_in)
