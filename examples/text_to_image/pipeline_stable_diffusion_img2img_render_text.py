@@ -50,7 +50,7 @@ def preprocess(image):
 class StableDiffusionImg2ImgRenderTextPipeline(StableDiffusionPipeline):
 
     def prepare_image_latents(self, image, timestep, batch_size, num_images_per_prompt, dtype, device, generator=None,
-                              do_classifier_free_guidance):
+                              do_classifier_free_guidance=False):
         image = image.to(device=device, dtype=dtype)
 
         batch_size = batch_size * num_images_per_prompt
