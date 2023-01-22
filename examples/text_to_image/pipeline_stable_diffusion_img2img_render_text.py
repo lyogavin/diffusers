@@ -49,7 +49,7 @@ def preprocess(image):
 
 class StableDiffusionImg2ImgRenderTextPipeline(StableDiffusionPipeline):
 
-    def prepare_image_latents(self, image, timestep, batch_size, num_images_per_prompt, dtype, device, generator=None,
+    def prepare_image_latents(self, image, batch_size, num_images_per_prompt, dtype, device, generator=None,
                               do_classifier_free_guidance=False):
         image = image.to(device=device, dtype=dtype)
 
@@ -203,12 +203,11 @@ class StableDiffusionImg2ImgRenderTextPipeline(StableDiffusionPipeline):
 
         # 5. set timesteps
         self.scheduler.set_timesteps(num_inference_steps, device=device)
-        timesteps, num_inference_steps = self.get_timesteps(num_inference_steps, strength, device)
-        latent_timestep = timesteps[:1].repeat(batch_size * num_images_per_prompt)
+        timesteps = self.scheduler.timesteps
 
         # 6. Prepare image latent variables
         conditioning_latents = self.prepare_image_latents(
-            image, latent_timestep, batch_size, num_images_per_prompt, text_embeddings.dtype, device, generator, do_classifier_free_guidance
+            image, batch_size, num_images_per_prompt, text_embeddings.dtype, device, generator, do_classifier_free_guidance
         )
         # 6.1 Prepare latent variables
         num_channels_latents = self.unet.in_channels // 2
