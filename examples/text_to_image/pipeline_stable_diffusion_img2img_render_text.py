@@ -206,11 +206,18 @@ class StableDiffusionImg2ImgRenderTextPipeline(StableDiffusionPipeline):
         )
         # 6.1 Prepare latent variables
         num_channels_latents = self.unet.in_channels // 2
+
+        # copied from https://github.com/huggingface/diffusers/blob/main/examples/community/img2img_inpainting.py
+        if isinstance(image, PIL.Image.Image):
+            w, h = image.size
+        elif isinstance(image, torch.Tensor):
+            *_, h, w = image.shape
+
         latents = self.prepare_latents(
             batch_size * num_images_per_prompt,
             num_channels_latents,
-            image.shape[2],
-            image.shape[1],
+            h,
+            w,
             text_embeddings.dtype,
             device,
             generator,
